@@ -1,11 +1,13 @@
 import React from 'react'
 import React, {useState} from 'react'
 
-const AuthView = () => {
+const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   return (
-    <div></div>
+    <div>
+      <p>Hi</p>
+    </div>
   )
 }
 
-export default AuthView
+export default AuthPage
