@@ -13,7 +13,7 @@ const App = () => {
     createRoutesFromElements(
       <Route path="/" element={<RootLayout />}>
         <Route index element={<AuthPage/>} />
-        <Route path="/AuthPage" element={<AuthPage />} />
+        {/* <Route path="/AuthPage" element={<AuthPage />} /> */}
       </Route>
     )
   );
