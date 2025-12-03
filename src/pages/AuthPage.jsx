@@ -3,6 +3,7 @@ import { Icon } from "@iconify/react";
 import { useForm } from "react-hook-form";
 import { email, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Link } from "react-router-dom";
 
 const AuthPage = () => {
   // for handling the login and register switching
@@ -156,13 +157,13 @@ const AuthPage = () => {
           {/* switch link */}
           <p className="mt-3 flex gap-1">
             {isLogin ? "Don't have an account?" : "Already have an account?"}
-            <a
-              href="#"
+            <Link
+              to="#"
               onClick={(e) => setIsLogin(!isLogin)}
               className="text-[#4ECDC4] hover:text-[#3C9D97]"
             >
               {isLogin ? "Register" : "Login"}
-            </a>
+            </Link>
           </p>
         </form>
       </div>

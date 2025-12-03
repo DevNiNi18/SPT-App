@@ -1,12 +1,15 @@
-import { Outlet } from 'react-router-dom'
-
+import { Outlet } from "react-router-dom";
+import Sidebar from "../components/sidebar";
 
 const RootLayout = () => {
   return (
-    <div>
-      <Outlet />
-    </div>
-  )
-}
+    <>
+      <div className="flex">
+        <Sidebar />
+        <Outlet />
+      </div>
+    </>
+  );
+};
 
-export default RootLayout
+export default RootLayout;

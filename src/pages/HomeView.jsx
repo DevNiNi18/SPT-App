@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const HomeView = () => {
   const navigate = useNavigate();
   const goToAuthPage = () => {
-    navigate("/AuthPage");
+    navigate("/authpage");
   }
 
   return (
