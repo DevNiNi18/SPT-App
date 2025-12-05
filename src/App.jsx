@@ -5,16 +5,22 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import RootLayout from "./Layout/RootLayout";
-// import HomeView from "./pages/HomeView";
+import Dashboard from "./pages/Dashboard";
 import AuthPage from "./pages/AuthPage";
+import HomeView from "./pages/HomeView";
+import Settings from "./pages/Settings";
 
 const App = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route path="/" element={<RootLayout />}>
-        <Route index element={<AuthPage />} />
-        {/* <Route path="/AuthPage" element={<AuthPage />} /> */}
-      </Route>
+      <>
+        <Route path="/authpage" element={<AuthPage />} />
+        <Route path="/homeview" element={<HomeView />} />
+        <Route path="/" element={<RootLayout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="/settings" element={<Settings />} />
+        </Route>
+      </>
     )
   );
   return (
