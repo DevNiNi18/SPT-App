@@ -2,25 +2,47 @@ import { Icon } from "@iconify/react";
 import { useState } from "react";
 import PopupMenu from "../components/PopupMenu";
 import ModalOverlay from "../components/ModalOverlay";
-
+import Modal from "../components/modal";
 const Dashboard = () => {
   // State controlling the project form modal
   const [projectFormModal, setProjectFormModal] = useState(false);
 
   return (
-    <main className="bg-[#F7F7F7] text-[#333333] w-full h-screen relative">
-      {projectFormModal && (
+    <main className="bg-[#F7F7F7] text-[#333333] w-full h-screen relative ">
+      
+      <Modal isOpen={projectFormModal} setIsOpen={setProjectFormModal} >
+        <div className="flex items-center justify-between m-5">
+          <div className="flex flex-col">
+            <h2 className="text-2xl font-semibold">Create a New Project</h2>
+            <p className="text-[15px]">
+              Fill in the details below to add a new project.
+            </p>
+          </div>
+
+          <div>
+            <Icon
+              icon="mdi:close"
+              className="w-5 h-5"
+              onClick={() => {
+                setProjectFormModal((prev) => !prev);
+              }}
+            />
+          </div>
+        </div>
+      </Modal>
+      
+      {/* {projectFormModal && (
         <PopupMenu
           projectFormModal={projectFormModal}
           setProjectFormModal={setProjectFormModal}
         />
-      )}
-      {projectFormModal && (
+      )}*/}
+      {/* {projectFormModal && (
         <ModalOverlay
           projectFormModal={projectFormModal}
           setProjectFormModal={setProjectFormModal}
         />
-      )}
+      )}*/}
       <div className="ml-20 flex gap-100 mt-5">
         <h2 className="text-3xl font-bold">Project Dashboard</h2>
         <button
