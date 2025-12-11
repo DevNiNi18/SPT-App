@@ -9,16 +9,18 @@ import Dashboard from "./pages/Dashboard";
 import AuthPage from "./pages/AuthPage";
 import HomeView from "./pages/HomeView";
 import Settings from "./pages/Settings";
+import ComponentUi from "./pages/component-ui";
 
 const App = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
+        <Route index element={<HomeView />} />
         <Route path="/authpage" element={<AuthPage />} />
-        <Route path="/homeview" element={<HomeView />} />
+        <Route path="/uiComponent" element={<ComponentUi />} />
         <Route path="/" element={<RootLayout />}>
-          <Route index element={<Dashboard />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Route>
       </>
     )

@@ -3,8 +3,8 @@ import { Link, NavLink } from "react-router-dom";
 
 const Sidebar = () => {
   return (
-    <aside className="w-[20%] h-screen bg-white rounded-r-md text-[#333333]">
-      <div className="flex items-center mx-auto">
+    <aside className="w-[20%] h-screen bg-white rounded-r-md text-[#333333] shadow-lg">
+      <div className="flex items-center mx-auto relative">
         <img
           src="/flowtrack-logo.png"
           alt="logo"
@@ -16,7 +16,7 @@ const Sidebar = () => {
       <div>
         <nav>
           <NavLink
-            to="/"
+            to="/dashboard"
             className={({isActive}) => `flex items-center gap-3 w-[90%] mx-auto rounded-lg ${isActive ? "text-[#4ECDC4] bg-[#327E78]/10" : ""} px-4 py-2.5 mt-7`}
           end>
             <Icon icon="mdi:view-dashboard" className="w-5 h-5" />
@@ -31,7 +31,7 @@ const Sidebar = () => {
           </NavLink>
         </nav>
         
-        <footer className="flex flex-col gap-5 mt-96">
+        <footer className="flex flex-col gap-5 mt-96 fixed">
           <div className="flex gap-2 mx-auto">
             <Icon icon="mdi:user" className="w-10 h-10 bg-gray-600 rounded-4xl py-1" />
             <div className="flex flex-col items-center text-[15px]">

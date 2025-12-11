@@ -40,7 +40,7 @@ const AuthPage = () => {
   }
 
   return (
-    <div className="bg-[#F7F7F7] w-full h-screen flex flex-col justify-center items-center px-4 text-[#333333]">
+    <div className="bg-[#F7F7F7] shadow-lg w-full h-screen flex flex-col justify-center items-center px-4 text-[#333333]">
       <div className="flex">
         <img
           src="/flowtrack-logo.png"

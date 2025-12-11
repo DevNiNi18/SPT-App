@@ -1,15 +1,34 @@
 import { Icon } from "@iconify/react";
 import { useState } from "react";
-import PopupMenu from "../components/PopupMenu";
-import ModalOverlay from "../components/ModalOverlay";
-import Modal from "../components/modal";
+import Modal from "../components/Modal";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 const Dashboard = () => {
-  // State controlling the project form modal
+  // State controlling the modal
   const [projectFormModal, setProjectFormModal] = useState(false);
+
+  // Auth for the project form 
+  const projectFormSchema = z.object({
+    projectTitle: z.string().nonempty("Field is required"),
+    dueDate: z.string().nonempty("Select Date"),
+  });
+
+  const { register, handleSubmit, reset, formState: { errors } } = useForm({
+    resolver: zodResolver(projectFormSchema),
+  });
+
+  const onSubmit = (data) => {
+    console.log(data);
+
+    reset();
+  }
 
   return (
     <main className="bg-[#F7F7F7] text-[#333333] w-full h-screen relative ">
-      
+    
+    {/* Inputs for the modal */}
       <Modal isOpen={projectFormModal} setIsOpen={setProjectFormModal} >
         <div className="flex items-center justify-between m-5">
           <div className="flex flex-col">
@@ -22,27 +41,49 @@ const Dashboard = () => {
           <div>
             <Icon
               icon="mdi:close"
-              className="w-5 h-5"
+              className="w-5 h-5 hover:scale-140"
               onClick={() => {
                 setProjectFormModal((prev) => !prev);
               }}
             />
           </div>
         </div>
+
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="flex flex-col m-5 gap-1">
+            <label className="font-semibold">Project Title</label>
+            <input
+              {...register("projectTitle")}
+              type="text"
+              placeholder="e.g., Design Portfolio Website"
+              className="border text-[14px] border-[gainsboro] px-2 w-[90%] rounded-lg py-3 focus:outline-[#4ECDC4]"
+            />
+          </div>
+          {errors.projectTitle && <div className="text-red-500 text-[13px] ml-6 -mt-5">{errors.projectTitle.message}</div>}
+          
+          <div className="flex flex-col m-5 gap-1">
+            <label className="font-semibold">Due Date</label>
+            <input
+              {...register("dueDate")}
+              type="date"
+              className="border border-[gainsboro] px-2 w-[90%] rounded-lg py-3 focus:outline-[#4ECDC4]"
+            />
+          </div>
+          {errors.dueDate && <div className="text-red-500 text-[13px] ml-6 -mt-5">{errors.dueDate.message}</div>}
+
+          <div className="flex justify-center items-center gap-3 ml-40">
+            <button className="border border-[gainsboro] py-1.5 px-3 text-[14px] font-semibold rounded-md hover:bg-red-400 hover:text-white" onClick={() => {
+              setProjectFormModal((prev) => !prev)
+            }}>
+              Cancel
+            </button>
+            <button className="bg-[#4ECDC4] text-white py-1.5 px-3 text-[14px] font-semibold rounded-md hover:bg-[#3C9D97]">
+              Save Project
+            </button>
+          </div>
+        </form>
       </Modal>
       
-      {/* {projectFormModal && (
-        <PopupMenu
-          projectFormModal={projectFormModal}
-          setProjectFormModal={setProjectFormModal}
-        />
-      )}*/}
-      {/* {projectFormModal && (
-        <ModalOverlay
-          projectFormModal={projectFormModal}
-          setProjectFormModal={setProjectFormModal}
-        />
-      )}*/}
       <div className="ml-20 flex gap-100 mt-5">
         <h2 className="text-3xl font-bold">Project Dashboard</h2>
         <button
