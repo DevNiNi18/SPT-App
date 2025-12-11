@@ -3,7 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 
 const Sidebar = () => {
   return (
-    <aside className="w-[20%] h-screen bg-white rounded-r-md text-[#333333]">
+    <aside className="w-[20%] h-screen bg-white rounded-r-md text-[#333333] shadow-lg">
       <div className="flex items-center mx-auto relative">
         <img
           src="/flowtrack-logo.png"
