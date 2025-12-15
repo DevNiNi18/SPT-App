@@ -9,7 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import AuthPage from "./pages/AuthPage";
 import HomeView from "./pages/HomeView";
 import Settings from "./pages/Settings";
-import ComponentUi from "./pages/component-ui";
+import ComponentUi from "./pages/Componentui";
 
 const App = () => {
   const router = createBrowserRouter(
