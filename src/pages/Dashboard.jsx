@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import { useState } from "react";
-import Modal from "../components/Modal";
+import Modal from "../components/modal";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
