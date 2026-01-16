@@ -1,3 +1,5 @@
+import { cn } from '../lib/utils'
+
 export default function Card({ children, size, className }) {
   return (
     <div>
@@ -11,4 +13,3 @@ export default function Card({ children, size, className }) {
 }
 
 
-import { cn } from '../lib/utils'

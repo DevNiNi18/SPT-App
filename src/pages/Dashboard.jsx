@@ -9,6 +9,9 @@ const Dashboard = () => {
   // State controlling the modal
   const [projectFormModal, setProjectFormModal] = useState(false);
 
+  // for storing the project form data
+  const [projectData, setProjectData] = useState([]);
+
   // Auth for the project form 
   const projectFormSchema = z.object({
     projectTitle: z.string().nonempty("Field is required"),
@@ -20,13 +23,18 @@ const Dashboard = () => {
   });
 
   const onSubmit = (data) => {
-    console.log(data);
+    const newProject = {
+      projectTitle: data.projectTitle,
+      dueDate: data.dueDate
+    }
+    setProjectData((prev) => [...prev, newProject])
+    setProjectFormModal(false);
 
     reset();
   }
 
   return (
-    <main className="bg-[#F7F7F7] text-[#333333] w-full h-screen relative ">
+    <main className=" text-[#333333] w-full h-screen relative ">
     
     {/* Inputs for the modal */}
       <Modal isOpen={projectFormModal} setIsOpen={setProjectFormModal} >
@@ -84,7 +92,7 @@ const Dashboard = () => {
         </form>
       </Modal>
       
-      <div className="ml-20 flex gap-100 mt-5">
+      <div className=" flex justify-between">
         <h2 className="text-3xl font-bold">Project Dashboard</h2>
         <button
           className="bg-[#4ECDC4] px-4 py-2 rounded-xl text-[13px] text-white hover:bg-[#3C9D97] duration-300 ease-in-out font-semibold cursor-pointer"
@@ -95,8 +103,31 @@ const Dashboard = () => {
           + Add Project
         </button>
       </div>
-
-      <div className="border border-dashed border-[#c1c1c1] mt-10 rounded-lg ml-20 w-[70%] h-[70%] bg-white">
+      
+      {/* For handling the state of the dashboard */}
+      {projectData.length > 0 ? <div>{projectData.map((project, index) => (
+          <div className="bg-white flex flex-col gap-7 mt-10 p-10 rounded-2xl shadow-md" key={index}>
+            
+            <div className="flex flex-col gap-1">
+              <div className="flex justify-between">
+                <p className="font-bold text-2xl">{project.projectTitle}</p>
+                <p className="text-red-500 cursor-pointer text-[16px]">Delete</p>
+              </div>
+                <div>
+                  <p>Due: {project.dueDate}</p>
+                </div>
+            </div>
+          
+            {/* for progress bar */}
+            <div className="flex flex-col gap-1">
+              <div className="flex justify-between">
+                <h3>Not started</h3>
+                <p>0%</p>
+              </div>
+              <div className="bg-gray-200 h-3 rounded-2xl"></div>
+            </div>
+          </div>
+        ))}</div> : <div className="border border-dashed border-[#c1c1c1] mt-10 rounded-lg ml-20 w-[70%] h-[70%] bg-white">
         <div className="flex flex-col justify-center items-center gap-2 mt-30">
           <Icon icon="mdi:archive" className="w-15 h-15 text-[#4ECDC4]" />
           <h4 className="font-bold">No project yet</h4>
@@ -112,7 +143,7 @@ const Dashboard = () => {
             + Add Your First Project
           </button>
         </div>
-      </div>
+      </div>}
     </main>
   );
 };

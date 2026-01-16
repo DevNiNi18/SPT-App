@@ -6,7 +6,9 @@ const RootLayout = () => {
     <>
       <div className="flex">
         <Sidebar />
-        <Outlet />
+        <div className="w-full p-10 bg-[#F7F7F7]">
+          <Outlet />
+        </div>
       </div>
     </>
   );

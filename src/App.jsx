@@ -17,7 +17,7 @@ const App = () => {
       <>
         <Route index element={<HomeView />} />
         <Route path="/authpage" element={<AuthPage />} />
-        <Route path="/uiComponent" element={<ComponentUi />} />
+        {/* <Route path="/uiComponent" element={<ComponentUi />} /> */}
         <Route path="/" element={<RootLayout />}>
           <Route path="/settings" element={<Settings />} />
           <Route path="/dashboard" element={<Dashboard />} />
