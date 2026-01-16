@@ -111,7 +111,7 @@ const Dashboard = () => {
             <div className="flex flex-col gap-1">
               <div className="flex justify-between">
                 <p className="font-bold text-2xl">{project.projectTitle}</p>
-                <p className="text-red-500 cursor-pointer text-[16px]">Delete</p>
+                <Icon icon="mdi:trash-can" className="w-8 h-8 cursor-pointer text-[#ababab]" />
               </div>
                 <div>
                   <p>Due: {project.dueDate}</p>
