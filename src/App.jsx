@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import AuthPage from "./pages/AuthPage";
 import HomeView from "./pages/HomeView";
 import Settings from "./pages/Settings";
+import TaskPage from "./pages/TaskPage";
 // import ComponentUi from "./pages/component-ui";
 
 const App = () => {
@@ -21,6 +22,7 @@ const App = () => {
         <Route path="/" element={<RootLayout />}>
           <Route path="/settings" element={<Settings />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/taskPage" element={<TaskPage />} />
         </Route>
       </>
     )
