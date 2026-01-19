@@ -38,11 +38,10 @@ const Dashboard = () => {
 
   const handleDelete = (id) => {
     setProjectData((prev) => prev.filter((project) => project.id !== id));
-    console.log("clicked!");
   };
 
   return (
-    <main className="text-[#333333] w-full min-h-screen relative px-4 sm:px-6 md:px-10 py-6">
+    <main className="text-[#333333] w-full min-h-screen px-4 sm:px-6 md:px-10 py-6">
       {/* Modal */}
       <Modal isOpen={projectFormModal} setIsOpen={setProjectFormModal}>
         <div className="flex items-start sm:items-center justify-between m-4 sm:m-5 gap-3">
@@ -58,9 +57,7 @@ const Dashboard = () => {
           <Icon
             icon="mdi:close"
             className="w-5 h-5 cursor-pointer"
-            onClick={() => {
-              setProjectFormModal((prev) => !prev);
-            }}
+            onClick={() => setProjectFormModal(false)}
           />
         </div>
 
@@ -98,9 +95,7 @@ const Dashboard = () => {
             <button
               type="button"
               className="border border-[gainsboro] py-2 px-4 text-sm font-semibold rounded-md hover:bg-red-400 hover:text-white"
-              onClick={() => {
-                setProjectFormModal((prev) => !prev);
-              }}
+              onClick={() => setProjectFormModal(false)}
             >
               Cancel
             </button>
@@ -116,21 +111,35 @@ const Dashboard = () => {
         <h2 className="text-2xl sm:text-3xl font-bold">Project Dashboard</h2>
         <button
           className="bg-[#4ECDC4] px-4 py-2 rounded-xl text-sm text-white hover:bg-[#3C9D97] font-semibold cursor-pointer w-full sm:w-auto"
-          onClick={() => {
-            setProjectFormModal((prev) => !prev);
-          }}
+          onClick={() => setProjectFormModal(true)}
         >
           + Add Project
         </button>
       </div>
 
       {/* Content */}
-      {projectData.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-8">
+      {projectData.length === 0 ? (
+        <div className="border border-dashed border-[#c1c1c1] mt-10 rounded-lg w-full bg-white p-6 sm:p-10">
+          <div className="flex flex-col justify-center items-center gap-3 text-center min-h-[320px]">
+            <Icon icon="mdi:archive" className="w-12 h-12 text-[#4ECDC4]" />
+            <h4 className="font-bold text-lg">No project yet</h4>
+            <p className="text-sm sm:text-[15px] text-[#7a7777] max-w-md">
+              Click "Add Project" to get started and keep track of your work.
+            </p>
+            <button
+              className="bg-[#4ECDC4] px-4 py-2 rounded-xl text-sm text-white hover:bg-[#3C9D97] font-semibold cursor-pointer"
+              onClick={() => setProjectFormModal(true)}
+            >
+              + Add Your First Project
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols--8 gap-6 mt-8 w-full">
           {projectData.map((project) => (
             <div
               onClick={() => navigate("/taskPage", { state: project })}
-              className="bg-white flex flex-col gap-6 p-6 sm:p-8 rounded-2xl shadow-md cursor-pointer"
+              className="bg-white flex flex-col gap-6 p-6 sm:p-8 rounded-2xl shadow-md cursor-pointer w-full"
               key={project.id}
             >
               <div className="flex flex-col gap-2">
@@ -139,7 +148,10 @@ const Dashboard = () => {
                     {project.projectTitle}
                   </p>
                   <Icon
-                    onClick={() => handleDelete(project.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDelete(project.id);
+                    }}
                     icon="mdi:trash-can"
                     className="w-6 h-6 sm:w-7 sm:h-7 cursor-pointer text-[#ababab]"
                   />
@@ -147,34 +159,15 @@ const Dashboard = () => {
                 <p className="text-sm sm:text-base">Due: {project.dueDate}</p>
               </div>
 
-              {/* Progress bar */}
               <div className="flex flex-col gap-1">
                 <div className="flex justify-between text-sm sm:text-base">
                   <h3>Not started</h3>
                   <p>0%</p>
                 </div>
-                <div className="bg-gray-200 h-3 rounded-2xl"></div>
+                <div className="bg-gray-200 h-3 rounded-2xl w-full"></div>
               </div>
             </div>
           ))}
-        </div>
-      ) : (
-        <div className="border border-dashed border-[#c1c1c1] mt-10 rounded-lg w-full bg-white p-6 sm:p-10">
-          <div className="flex flex-col justify-center items-center gap-3 text-center min-h-[300px]">
-            <Icon icon="mdi:archive" className="w-12 h-12 text-[#4ECDC4]" />
-            <h4 className="font-bold text-lg">No project yet</h4>
-            <p className="text-sm sm:text-[15px] text-[#7a7777] max-w-md">
-              Click "Add Project" to get started and keep track of your work.
-            </p>
-            <button
-              className="bg-[#4ECDC4] px-4 py-2 rounded-xl text-sm text-white hover:bg-[#3C9D97] font-semibold cursor-pointer"
-              onClick={() => {
-                setProjectFormModal((prev) => !prev);
-              }}
-            >
-              + Add Your First Project
-            </button>
-          </div>
         </div>
       )}
     </main>

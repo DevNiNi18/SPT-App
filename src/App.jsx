@@ -22,7 +22,7 @@ const App = () => {
         <Route path="/" element={<RootLayout />}>
           <Route path="/settings" element={<Settings />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/taskPage" element={<TaskPage />} />
+          <Route path="/taskPage" element={<TaskPage/>} />
         </Route>
       </>
     )

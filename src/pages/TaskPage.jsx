@@ -6,7 +6,7 @@ const TaskPage = () => {
   
   return (
     <div>
-      <h1 className="border">{state.projecTitle}</h1>
+      <h1>{state.projecTitle}</h1>
     </div>
   )
 }
