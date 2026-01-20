@@ -10,7 +10,6 @@ import AuthPage from "./pages/AuthPage";
 import HomeView from "./pages/HomeView";
 import Settings from "./pages/Settings";
 import TaskPage from "./pages/TaskPage";
-// import ComponentUi from "./pages/component-ui";
 
 const App = () => {
   const router = createBrowserRouter(
@@ -18,7 +17,6 @@ const App = () => {
       <>
         <Route index element={<HomeView />} />
         <Route path="/authpage" element={<AuthPage />} />
-        {/* <Route path="/uiComponent" element={<ComponentUi />} /> */}
         <Route path="/" element={<RootLayout />}>
           <Route path="/settings" element={<Settings />} />
           <Route path="/dashboard" element={<Dashboard />} />
