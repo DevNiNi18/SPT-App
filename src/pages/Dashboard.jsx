@@ -30,10 +30,7 @@ const Dashboard = () => {
       id: Date.now().toString(),
       projectTitle: data.projectTitle,
       dueDate: data.dueDate,
-      tasks: [],
-      progress: 0,
     };
-    
     setProjectData((prev) => [...prev, newProject]);
     setProjectFormModal(false);
     reset();
@@ -125,7 +122,7 @@ const Dashboard = () => {
         <div className="border border-dashed border-[#c1c1c1] mt-10 rounded-lg w-full bg-white p-6 sm:p-10">
           <div className="flex flex-col justify-center items-center gap-3 text-center min-h-[320px]">
             <Icon icon="mdi:archive" className="w-12 h-12 text-[#4ECDC4]" />
-            <h4 className="font-bold text-lg">No project yet</h4>
+            <h4 className="font-bold text-lg">No project yet?</h4>
             <p className="text-sm sm:text-[15px] text-[#7a7777] max-w-md">
               Click "Add Project" to get started and keep track of your work.
             </p>
@@ -138,7 +135,7 @@ const Dashboard = () => {
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols--8 gap-6 mt-8 w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 w-full">
           {projectData.map((project) => (
             <div
               onClick={() => navigate("/taskPage", { state: project })}
@@ -147,7 +144,7 @@ const Dashboard = () => {
             >
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between items-start gap-3">
-                  <p className="font-bold text-lg sm:text-xl md:text-1xl break-words">
+                  <p className="font-bold text-lg sm:text-xl md:text-2xl break-words">
                     {project.projectTitle}
                   </p>
                   <Icon
@@ -164,12 +161,10 @@ const Dashboard = () => {
 
               <div className="flex flex-col gap-1">
                 <div className="flex justify-between text-sm sm:text-base">
-                  <h3>{project.progress === 100 ? "Completed" : project.progress > 0 ? "In progress" : "Not started"}</h3>
-                  <p>{project.progress}%</p>
+                  <h3>Not started</h3>
+                  <p>0%</p>
                 </div>
-                <div className="bg-gray-200 h-3 rounded-full overflow-hidden">
-                  <div className="bg-[#4ECDC4] h-full transition-all duration-300" style={{ width: `${project.progress}%` }}></div>
-                </div>
+                <div className="bg-gray-200 h-3 rounded-2xl w-full"></div>
               </div>
             </div>
           ))}
