@@ -1,16 +1,17 @@
 import { Icon } from "@iconify/react";
 import { useState } from "react";
 import Modal from "../components/modal";
+import ProjectCard from "../components/ProjectCard"; // Import the ProjectCard
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   // State controlling the modal
   const [projectFormModal, setProjectFormModal] = useState(false);
-
-  // for storing the project form data
-  const [projectData, setProjectData] = useState([]);
+  const [projects, setProjects] = useState([]);
+  const navigate = useNavigate()
 
   // Auth for the project form
   const projectFormSchema = z.object({
@@ -28,26 +29,29 @@ const Dashboard = () => {
   });
 
   const onSubmit = (data) => {
+    // Create new project with unique ID
     const newProject = {
       id: Date.now().toString(),
       projectTitle: data.projectTitle,
       dueDate: data.dueDate,
+      status: "Not Started",
+      progress: 0,
     };
-    setProjectData((prev) => [...prev, newProject]);
-    setProjectFormModal(false);
 
-    localStorage.setItem("Project-data", projectData);
-    // const storedData = localStorage.getItem("Project-data");
+    // Add to projects array
+    setProjects((prev) => [...prev, newProject]);
+    setProjectFormModal(false);
+    console.log("project data", data.projectTitle);
 
     reset();
   };
 
-  const handleDelete = () => {
-    setProjectData((prev) => prev.filter((project) => project.id !== id));
+  const handleDeleteProject = (id) => {
+    setProjects((prev) => prev.filter((project) => project.id !== id));
   };
 
   return (
-    <main className=" text-[#333333] w-full h-screen relative ">
+    <main className="bg-[#F7F7F7] text-[#333333] w-full min-h-screen relative">
       {/* Inputs for the modal */}
       <Modal isOpen={projectFormModal} setIsOpen={setProjectFormModal}>
         <div className="flex items-center justify-between m-5">
@@ -61,9 +65,9 @@ const Dashboard = () => {
           <div>
             <Icon
               icon="mdi:close"
-              className="w-5 h-5 hover:scale-140"
+              className="w-5 h-5 hover:scale-140 cursor-pointer"
               onClick={() => {
-                setProjectFormModal((prev) => !prev);
+                setProjectFormModal(false);
               }}
             />
           </div>
@@ -99,73 +103,57 @@ const Dashboard = () => {
             </div>
           )}
 
-          <div className="flex justify-center items-center gap-3 ml-40">
+          <div className="flex justify-center items-center gap-3 ml-40 mb-5">
             <button
-              className="border border-[gainsboro] py-1.5 px-3 text-[14px] font-semibold rounded-md hover:bg-red-400 hover:text-white"
+              type="button"
+              className="border border-[gainsboro] py-1.5 px-3 text-[14px] font-semibold rounded-md hover:bg-red-400 hover:text-white transition-colors"
               onClick={() => {
-                setProjectFormModal((prev) => !prev);
+                setProjectFormModal(false);
               }}
             >
               Cancel
             </button>
-            <button className="bg-[#4ECDC4] text-white py-1.5 px-3 text-[14px] font-semibold rounded-md hover:bg-[#3C9D97]">
+            <button
+              type="submit"
+              className="bg-[#4ECDC4] text-white py-1.5 px-3 text-[14px] font-semibold rounded-md hover:bg-[#3C9D97] transition-colors"
+            >
               Save Project
             </button>
           </div>
         </form>
       </Modal>
 
-      <div className=" flex justify-between">
+      {/* Header */}
+      <div className="ml-20 flex justify-between items-center mr-20 mt-5">
         <h2 className="text-3xl font-bold">Project Dashboard</h2>
         <button
           className="bg-[#4ECDC4] px-4 py-2 rounded-xl text-[13px] text-white hover:bg-[#3C9D97] duration-300 ease-in-out font-semibold cursor-pointer"
           onClick={() => {
-            setProjectFormModal((prev) => !prev);
+            setProjectFormModal(true);
           }}
         >
           + Add Project
         </button>
       </div>
 
-      {/* For handling the state of the dashboard */}
-      {projectData.length > 0 ? (
-        <div>
-          {projectData.map((project, index) => (
-            // mapped children
-            <div
-              className="flex flex-col gap-5 bg-white mt-10 p-10 rounded-2xl shadow-md"
-              key={index}
-            >
-              {/* project title, date and delete icon */}
-              <div className="flex flex-col gap-1">
-                <div className="flex justify-between">
-                  <h3 className="font-bold text-[18px]">
-                    {project.projectTitle}
-                  </h3>
-                  <p
-                    className="text-red-500 cursor-pointer"
-                    onClick={() => handleDelete(project.id)}
-                  >
-                    delete
-                  </p>
-                </div>
-                <p>Due: {project.dueDate}</p>
-              </div>
-
-              {/* status */}
-              <div className="w-full flex flex-col gap-1">
-                <div className="flex justify-between">
-                  <p className="font-bold">not started</p>
-                  <p>0%</p>
-                </div>
-                <div className="w-full bg-green-400 h-2 rounded-lg"></div>
-              </div>
-            </div>
+      {/* Projects Display */}
+      {projects.length > 0 ? (
+        <div className="ml-20 mr-20 mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {projects.map((project) => (
+            <ProjectCard
+              key={project.id}
+              projectTitle={project.projectTitle}
+              dueDate={project.dueDate}
+              status={project.status}
+              progress={project.progress}
+              onDelete={() => handleDeleteProject(project.id)}
+              onClick={() => navigate("/taskPage", { state: project })}
+            />
           ))}
         </div>
       ) : (
-        <div className="border border-dashed border-[#c1c1c1] mt-10 rounded-lg ml-20 w-[70%] h-[70%] bg-white">
-          <div className="flex flex-col justify-center items-center gap-2 mt-30">
+        <div className="border border-dashed border-[#c1c1c1] mt-10 rounded-lg ml-20 mr-20 h-[500px] bg-white">
+          <div className="flex flex-col justify-center items-center gap-2 h-full">
             <Icon icon="mdi:archive" className="w-15 h-15 text-[#4ECDC4]" />
             <h4 className="font-bold">No project yet</h4>
             <p className="text-[15px] text-[#7a7777]">
@@ -174,7 +162,7 @@ const Dashboard = () => {
             <button
               className="bg-[#4ECDC4] px-4 py-2 rounded-xl text-[13px] text-white hover:bg-[#3C9D97] duration-300 ease-in-out font-semibold cursor-pointer"
               onClick={() => {
-                setProjectFormModal((prev) => !prev);
+                setProjectFormModal(true);
               }}
             >
               + Add Your First Project
