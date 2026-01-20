@@ -30,7 +30,10 @@ const Dashboard = () => {
       id: Date.now().toString(),
       projectTitle: data.projectTitle,
       dueDate: data.dueDate,
+      tasks: [],
+      progress: 0,
     };
+    
     setProjectData((prev) => [...prev, newProject]);
     setProjectFormModal(false);
     reset();
@@ -144,7 +147,7 @@ const Dashboard = () => {
             >
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between items-start gap-3">
-                  <p className="font-bold text-lg sm:text-xl md:text-2xl break-words">
+                  <p className="font-bold text-lg sm:text-xl md:text-1xl break-words">
                     {project.projectTitle}
                   </p>
                   <Icon
@@ -161,10 +164,12 @@ const Dashboard = () => {
 
               <div className="flex flex-col gap-1">
                 <div className="flex justify-between text-sm sm:text-base">
-                  <h3>Not started</h3>
-                  <p>0%</p>
+                  <h3>{project.progress === 100 ? "Completed" : project.progress > 0 ? "In progress" : "Not started"}</h3>
+                  <p>{project.progress}%</p>
                 </div>
-                <div className="bg-gray-200 h-3 rounded-2xl w-full"></div>
+                <div className="bg-gray-200 h-3 rounded-full overflow-hidden">
+                  <div className="bg-[#4ECDC4] h-full transition-all duration-300" style={{ width: `${project.progress}%` }}></div>
+                </div>
               </div>
             </div>
           ))}
