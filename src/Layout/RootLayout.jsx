@@ -3,9 +3,9 @@ import Sidebar from "../components/Sidebar";
 
 const RootLayout = () => {
   return (
-    <div className="flex flex-col sm:flex-row">
+    <div className="flex flex-col sm:flex-row min-h-screen bg-[#F7F7F7]">
       <Sidebar />
-      <div className="w-full p-4 sm:p-10 bg-[#F7F7F7]">
+      <div className="flex-1 w-full p-4 sm:p-6 lg:p-8 transition-all duration-300">
         <Outlet />
       </div>
     </div>
