@@ -10,6 +10,7 @@ import AuthPage from "./pages/AuthPage";
 import HomeView from "./pages/HomeView";
 import Settings from "./pages/Settings";
 import TaskPage from "./pages/TaskPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   const router = createBrowserRouter(
@@ -17,10 +18,17 @@ const App = () => {
       <>
         <Route index element={<HomeView />} />
         <Route path="/authpage" element={<AuthPage />} />
-        <Route path="/" element={<RootLayout />}>
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <RootLayout />
+            </ProtectedRoute>
+          }
+        >
           <Route path="/settings" element={<Settings />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/taskPage" element={<TaskPage/>} />
+          <Route path="/taskPage" element={<TaskPage />} />
         </Route>
       </>
     )
