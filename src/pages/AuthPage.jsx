@@ -1,25 +1,30 @@
 import React, { useState } from "react";
 import { Icon } from "@iconify/react";
 import { useForm } from "react-hook-form";
-import { email, z } from "zod";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [authError, setAuthError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { signIn, signUp } = useAuth();
+  const navigate = useNavigate();
 
   const loginSchema = z.object({
-    email: z.string().nonempty("Email is required").email("Invalid Email"),
+    email: z.string().min(1, "Email is required").email("Invalid Email"),
     password: z.string().min(8, "Password must be at least 8 characters"),
   });
 
   const registerSchema = z
     .object({
-      email: z.string().nonempty("Email is required").email("Invalid Email"),
+      email: z.string().min(1, "Email is required").email("Invalid Email"),
       password: z.string().min(8, "Password must be at least 8 characters"),
-      confirmPassword: z.string().nonempty("Please confirm your password"),
+      confirmPassword: z.string().min(1, "Please confirm your password"),
     })
     .refine((data) => data.password === data.confirmPassword, {
       path: ["confirmPassword"],
@@ -30,14 +35,41 @@ const AuthPage = () => {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm({
     resolver: zodResolver(isLogin ? loginSchema : registerSchema),
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
-    reset();
+  const onSubmit = async (data) => {
+    setAuthError("");
+    setIsSubmitting(true);
+
+    try {
+      if (isLogin) {
+        await signIn(data.email, data.password);
+        navigate("/dashboard");
+      } else {
+        const { data: signUpData, error: signUpError } = await signUp(
+          data.email,
+          data.password
+        );
+
+        if (signUpError) throw signUpError;
+
+        // If user is created and session is available, log them in automatically
+        if (signUpData.user && signUpData.session) {
+          navigate("/dashboard");
+        } else {
+          // If no session, try to sign in immediately
+          await signIn(data.email, data.password);
+          navigate("/dashboard");
+        }
+      }
+    } catch (error) {
+      setAuthError(error.message || "An error occurred. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -75,6 +107,18 @@ const AuthPage = () => {
         <h4 className="text-lg sm:text-xl font-semibold mb-2">
           {isLogin ? "Login to Your Account" : "Create Your Account"}
         </h4>
+
+        {authError && (
+          <div
+            className={`w-full max-w-sm mb-4 p-3 rounded-md text-sm ${
+              authError.includes("created")
+                ? "bg-green-100 text-green-700"
+                : "bg-red-100 text-red-700"
+            }`}
+          >
+            {authError}
+          </div>
+        )}
 
         <form className="flex flex-col w-full max-w-sm" onSubmit={handleSubmit(onSubmit)}>
           {/* Email */}
@@ -143,8 +187,12 @@ const AuthPage = () => {
           )}
 
           {/* Submit */}
-          <button className="bg-[#4ECDC4] mt-5 py-2.5 text-white rounded-md hover:bg-[#3C9D97] transition">
-            {isLogin ? "Login" : "Register"}
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="bg-[#4ECDC4] mt-5 py-2.5 text-white rounded-md hover:bg-[#3C9D97] transition disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isSubmitting ? "Processing..." : isLogin ? "Login" : "Register"}
           </button>
 
           {/* Switch link */}
